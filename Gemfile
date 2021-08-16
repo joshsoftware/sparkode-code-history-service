@@ -57,4 +57,3 @@ gem 'figaro'
 gem 'http'
 gem 'simplecov'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-gem 'sassc-rails'
