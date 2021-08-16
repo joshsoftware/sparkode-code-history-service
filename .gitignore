@@ -23,7 +23,7 @@
 /config/master.key
 /db/schema.rb
 /coverage/*
-/config/database.yml
+# /config/database.yml
 /config/local_env.yml
 /vendor/bundle
 
