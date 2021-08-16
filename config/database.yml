@@ -81,7 +81,7 @@ test:
 #
 production:
   <<: *default
-  database: oncot_autosave_service_production
-  # host: <%= ENV['CODESAVE-SERVICE-DATABASE-HOST'] %>
-  # username: <%= ENV['CODESAVE-SERVICE-DATABASE-USERNAME'] %>
-  # password: <%= ENV['CODESAVE-SERVICE-DATABASE-PASSWORD'] %>
+  # database: oncot_autosave_service_production
+  host: <%= ENV['ONCOT-DATABASE-HOST'] %>
+  username: <%= ENV['ONCOT-DATABASE-USERNAME'] %>
+  password: <%= ENV['ONCOT-DATABASE-PASSWORD'] %>
