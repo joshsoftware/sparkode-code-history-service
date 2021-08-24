@@ -11,17 +11,18 @@ require 'mina/git'
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :puma_state, "#{fetch(:deploy_to)}/shared/tmp/sockets/puma.state"
-set :puma_socket, "#{fetch(:deploy_to)}/shared/tmp/sockets/puma.sock"
-set :puma_pid, "#{fetch(:deploy_to)}/shared/tmp/pids/puma.pid"
-set :start_port, 3000
-
 set :application_name, 'sparkode_code_history_service'
 set :domain, '65.1.201.245'
 set :deploy_to, '/home/ubuntu/oncot/code_history_service'
 set :repository, 'git@github.com:joshsoftware/sparkode-code-history-service.git'
 set :branch, 'Main'
 set :rvm_use_path, '/home/ubuntu/.rvm/bin/rvm'
+
+set :puma_state, "#{fetch(:deploy_to)}/shared/tmp/sockets/puma.state"
+set :puma_socket, "#{fetch(:deploy_to)}/shared/tmp/sockets/puma.sock"
+set :puma_pid, "#{fetch(:deploy_to)}/shared/tmp/pids/puma.pid"
+set :start_port, 3000
+
 
 # Optional settings:
 set :user, 'ubuntu' # Username in the server to SSH to.
@@ -80,7 +81,11 @@ task :deploy do
         command %(mkdir -p tmp/)
         command %(touch tmp/restart.txt)
         # command %{RAILS_ENV=production bundle exec anycable}
-        command %(pumactl restart)
+        command %(echo #{fetch(:current_path)})
+        command %( source ~/.rvm/scripts/rvm )
+        command %( rvm use 3.0.0 )
+        command %(RAILS_ENV=production bundle exec pumactl start)
+        # invoke :puma_start
       end
     end
   end
@@ -95,7 +100,7 @@ task puma_start: :remote_environment do
       echo 'Puma is already running'
     else
       echo 'Start Puma'
-      cd #{fetch(:current_path)} && bundle exec puma -q -d -e #{fetch(:rails_env)} -C #{fetch(:current_path)}/config/puma.rb -p #{fetch(:start_port)} -S #{fetch(:puma_state)} -b "unix://#{fetch(:deploy_to)}#{fetch(:puma_socket)}" --pidfile #{fetch(:puma_pid)}
+      cd #{fetch(:current_path)} && bundle exec puma -q  -e #{fetch(:rails_env)} -C #{fetch(:current_path)}/config/puma.rb -p #{fetch(:start_port)} -S #{fetch(:puma_state)} -b "unix://#{fetch(:deploy_to)}#{fetch(:puma_socket)}" --pidfile #{fetch(:puma_pid)}
     fi
   )
 end
