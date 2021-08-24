@@ -81,11 +81,12 @@ task :deploy do
         command %(mkdir -p tmp/)
         command %(touch tmp/restart.txt)
         # command %{RAILS_ENV=production bundle exec anycable}
-        command %(echo #{fetch(:current_path)})
-        command %( source ~/.rvm/scripts/rvm )
-        command %( rvm use 3.0.0 )
-        command %(RAILS_ENV=production bundle exec pumactl start)
+        # command %(echo #{fetch(:current_path)})
+        # command %( source ~/.rvm/scripts/rvm )
+        # command %( rvm use 3.0.0 )
+        # command %(RAILS_ENV=production bundle exec pumactl start)
         # invoke :puma_start
+        command %(pumactl restart)
       end
     end
   end
